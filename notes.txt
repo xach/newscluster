@@ -1,0 +1,67 @@
+Goals:
+
+   - rerender planet page without fetching any feeds
+
+   - initialize planet from filesystem for bootstrap
+
+   - incrementally update long-running planet system with single new
+     items
+
+     - implies a communication/command mechanism with the planet,
+       i.e. "update the metadata for this channel", "add an item to
+       this channel", "add this new channel"
+
+
+A planet is stored in the filesystem.
+
+   - one directory per planet
+
+   - one directory per channel
+
+   - one file per item
+
+
+When displaying an item in the planet, the template specifies certain
+parts from the channel, too: the channel title and the channel
+link. This makes it a little tricky to load an individual item, but
+only a little; since any item has to be added to a channel to be
+aggregated, the channel backlink can be added at that time.
+
+
+There are several different date formats used in filling out the
+templates.
+
+   - rfc822 date (for the XML generation)
+
+   - plain date (e.g. "May 5, 2004") for separating days in the planet
+
+   - plain date & time ("May 5, 2004 08:15 PM")
+
+Would be nice to have a strftime-style thing for formatting universal
+times.
+
+
+The python date magic is based on a few key things:
+
+   - the file is named with the md5 hex digest of the channel's
+     id
+
+   - the file's mtime value is set in one of five ways:
+
+     - if the item includes a date, that date is used
+
+     - if the item does not include a date, and the channel has never
+       had any items (i.e. it's a new feed full of undated items),
+       the date is set to unixtime 0
+
+     - if the item does not include a date, and the item file already
+       exists (since they're named by their ids), the existing file's
+       date is used
+
+     - if the item does not include a date, and the item file does
+       not already exist, the current time is used
+
+
+Must make TMPL_IF behave properly for the empty string, or convert
+the empty string to NIL when generating the template values.
+

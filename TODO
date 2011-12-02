@@ -1,0 +1,10 @@
+
+some kind of force-fetch override
+
+prune old items
+
+bug: fix "last updated" date at the bottom
+
+change template structure to groups of days containing items
+
+maybe group consecutive items by the same author in an interesting way
